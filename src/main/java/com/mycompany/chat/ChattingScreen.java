@@ -8,12 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  *
  * @author LG
  */
-public class ChattingScreen extends javax.swing.JFrame implements ActionListener, Runnable {
+public class ChattingScreen extends javax.swing.JFrame implements ActionListener, Runnable, KeyListener {
 
     /**
      * Creates new form ChattingScreen
@@ -28,6 +30,7 @@ public class ChattingScreen extends javax.swing.JFrame implements ActionListener
         initComponents();
         Client();
         jButton1.addActionListener(this); // ActionListener 등록 추가
+        jTextField1.addActionListener(this);
     }
     public void Client(){
         try {
@@ -161,14 +164,12 @@ public class ChattingScreen extends javax.swing.JFrame implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        clientText = jTextField1.getText();
-
-        // 변수에 저장 후 텍스트필드 초기화
-        jTextField1.setText("");
-
-        // 내가 쓴 메세지 출력 -> 상대방은 br.readLine()으로 읽어들임
-        pw.println(clientText);
-        pw.flush();
+        if (e.getSource() == jTextField1 || e.getSource() == jButton1) {
+            clientText = jTextField1.getText();
+            jTextField1.setText("");
+            pw.println(clientText);
+            pw.flush();
+        }
     }
 
     @Override
@@ -180,5 +181,23 @@ public class ChattingScreen extends javax.swing.JFrame implements ActionListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButton1.doClick(); // 엔터 키가 눌리면 보내기 버튼을 프로그래밍적으로 클릭합니다.
+        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
